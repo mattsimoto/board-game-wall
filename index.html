@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="A visual wall of board games sized by popularity and rank movement." />
+  <title>Board Game Wall</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">BOARDGAMEGEEK MARKET VIEW</p>
+      <h1>Board Game Wall</h1>
+      <p class="lede">Popular games take up more space. Rank movement shows what is rising and falling.</p>
+    </div>
+    <div class="status-panel">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span id="updatedLabel">Loading data…</span>
+    </div>
+  </header>
+
+  <section class="controls" aria-label="Game filters">
+    <div class="control-group view-group">
+      <span class="control-label">View</span>
+      <div class="segmented" id="viewControls">
+        <button class="active" data-view="rank">Overall Rank</button>
+        <button data-view="climbers">Biggest Climbers</button>
+        <button data-view="fallers">Biggest Fallers</button>
+        <button data-view="hot">Hot Now</button>
+      </div>
+    </div>
+
+    <label class="select-control">
+      <span>Category</span>
+      <select id="categoryFilter"><option value="all">All categories</option></select>
+    </label>
+
+    <label class="select-control">
+      <span>Players</span>
+      <select id="playersFilter">
+        <option value="all">Any</option>
+        <option value="1">1 player</option>
+        <option value="2">2 players</option>
+        <option value="3">3 players</option>
+        <option value="4">4 players</option>
+        <option value="5">5 players</option>
+        <option value="6">6+ players</option>
+      </select>
+    </label>
+
+    <label class="select-control">
+      <span>Age</span>
+      <select id="ageFilter">
+        <option value="all">Any</option>
+        <option value="6">6+</option>
+        <option value="8">8+</option>
+        <option value="10">10+</option>
+        <option value="12">12+</option>
+        <option value="14">14+</option>
+      </select>
+    </label>
+
+    <label class="select-control">
+      <span>Play time</span>
+      <select id="timeFilter">
+        <option value="all">Any</option>
+        <option value="30">≤ 30 min</option>
+        <option value="60">30–60 min</option>
+        <option value="120">60–120 min</option>
+        <option value="121">2+ hours</option>
+      </select>
+    </label>
+
+    <button id="resetFilters" class="reset-button">Reset</button>
+  </section>
+
+  <main>
+    <section class="summary-bar">
+      <div><strong id="gameCount">0</strong><span>games shown</span></div>
+      <div class="legend"><span class="move up">▲ rising</span><span class="move down">▼ falling</span><span class="move flat">• steady</span></div>
+    </section>
+
+    <section id="gameWall" class="game-wall" aria-live="polite"></section>
+    <div id="emptyState" class="empty-state" hidden>No games match those filters.</div>
+  </main>
+
+  <dialog id="gameDialog" class="game-dialog">
+    <button id="closeDialog" class="dialog-close" aria-label="Close">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <footer>
+    <span>Board Game Wall</span>
+    <span>Data sourced from BoardGameGeek. This project is not affiliated with BoardGameGeek.</span>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
