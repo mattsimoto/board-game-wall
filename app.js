@@ -21,22 +21,31 @@ function movementLabel(delta) {
   if (delta < 0) return `▼ ${Math.abs(delta)}`;
   return '• 0';
 }
+function playerLabel(game) {
+  return game.minPlayers === game.maxPlayers ? `${game.minPlayers}` : `${game.minPlayers}–${game.maxPlayers}`;
+}
+function timeLabel(game) {
+  if (!game.minPlayTime && !game.maxPlayTime) return '—';
+  if (game.minPlayTime === game.maxPlayTime) return `${game.maxPlayTime}m`;
+  return `${game.minPlayTime}–${game.maxPlayTime}m`;
+}
 function cardSize(game, index) {
   if (state.view !== 'rank') {
     const magnitude = Math.abs(game.rankChange30 || 0);
-    if (index < 2 || magnitude >= 25) return 'size-hero';
-    if (index < 6 || magnitude >= 15) return 'size-xl';
-    if (index < 14 || magnitude >= 8) return 'size-lg';
-    return index < 30 ? 'size-md' : 'size-sm';
+    if (index === 0 || magnitude >= 30) return 'size-hero';
+    if (index < 4 || magnitude >= 18) return 'size-xl';
+    if (index < 10 || magnitude >= 10) return 'size-lg';
+    if (index < 28 || magnitude >= 4) return 'size-md';
+    return 'size-sm';
   }
-  if (game.rank <= 3) return 'size-hero';
-  if (game.rank <= 10) return 'size-xl';
-  if (game.rank <= 25) return 'size-lg';
-  if (game.rank <= 60) return 'size-md';
+  if (game.rank === 1) return 'size-hero';
+  if (game.rank <= 4) return 'size-xl';
+  if (game.rank <= 12) return 'size-lg';
+  if (game.rank <= 35) return 'size-md';
   return 'size-sm';
 }
 function matches(game) {
-  if (category.value !== 'all' && !game.categories.includes(category.value)) return false;
+  if (category.value !== 'all' && !(game.categories || []).includes(category.value)) return false;
   if (players.value !== 'all') {
     const p = Number(players.value);
     if (p === 6 ? game.maxPlayers < 6 : p < game.minPlayers || p > game.maxPlayers) return false;
@@ -53,9 +62,9 @@ function matches(game) {
 }
 function sortGames(games) {
   const copy = [...games];
-  if (state.view === 'climbers') return copy.sort((a,b) => (b.rankChange30||0) - (a.rankChange30||0));
-  if (state.view === 'fallers') return copy.sort((a,b) => (a.rankChange30||0) - (b.rankChange30||0));
-  if (state.view === 'hot') return copy.sort((a,b) => (b.hotScore||0) - (a.hotScore||0));
+  if (state.view === 'climbers') return copy.sort((a,b) => (b.rankChange30||0) - (a.rankChange30||0) || a.rank - b.rank);
+  if (state.view === 'fallers') return copy.sort((a,b) => (a.rankChange30||0) - (b.rankChange30||0) || a.rank - b.rank);
+  if (state.view === 'hot') return copy.sort((a,b) => (b.hotScore||0) - (a.hotScore||0) || a.rank - b.rank);
   return copy.sort((a,b) => a.rank - b.rank);
 }
 function render() {
@@ -63,7 +72,7 @@ function render() {
   count.textContent = games.length;
   empty.hidden = games.length > 0;
   wall.innerHTML = games.map((game, index) => `
-    <article class="game-card ${cardSize(game,index)}" data-id="${game.id}" tabindex="0" role="button" aria-label="${escapeHtml(game.name)}, rank ${game.rank}">
+    <article class="game-card ${cardSize(game,index)}" data-id="${game.id}" tabindex="0" role="button" aria-label="${escapeHtml(game.name)}, BoardGameGeek rank ${game.rank}">
       <img src="${escapeHtml(game.image)}" alt="${escapeHtml(game.name)} box cover" loading="lazy" referrerpolicy="no-referrer" />
       <div class="card-top">
         <span class="rank-badge">#${game.rank}</span>
@@ -72,7 +81,12 @@ function render() {
       <div class="card-bottom">
         <div class="game-info">
           <div class="game-name">${escapeHtml(game.name)}</div>
-          <div class="game-meta"><span>♟ ${game.minPlayers}–${game.maxPlayers}</span><span>◷ ${game.minPlayTime}–${game.maxPlayTime}m</span><span>${game.minAge}+</span></div>
+          <div class="game-meta">
+            <span title="Players">♟ ${playerLabel(game)}</span>
+            <span title="Play time">◷ ${timeLabel(game)}</span>
+            <span title="Minimum age">${game.minAge}+</span>
+            ${game.rating ? `<span title="BGG rating">★ ${Number(game.rating).toFixed(1)}</span>` : ''}
+          </div>
         </div>
       </div>
     </article>`).join('');
@@ -87,13 +101,13 @@ function showGame(id) {
       <h2>${escapeHtml(g.name)}</h2>
       <p>${escapeHtml(g.year || '')}${g.rating ? ` · ${Number(g.rating).toFixed(1)} BGG rating` : ''}</p>
       <div class="detail-grid">
-        <div class="detail"><span>Players</span><strong>${g.minPlayers}–${g.maxPlayers}</strong></div>
+        <div class="detail"><span>Players</span><strong>${playerLabel(g)}</strong></div>
         <div class="detail"><span>Age</span><strong>${g.minAge}+</strong></div>
-        <div class="detail"><span>Play time</span><strong>${g.minPlayTime}–${g.maxPlayTime} min</strong></div>
+        <div class="detail"><span>Play time</span><strong>${timeLabel(g)}</strong></div>
         <div class="detail"><span>30-day move</span><strong class="${movementClass(g.rankChange30)}">${movementLabel(g.rankChange30)}</strong></div>
       </div>
-      <p>${g.categories.map(escapeHtml).join(' · ')}</p>
-      <a class="bgg-link" href="https://boardgamegeek.com/boardgame/${g.id}" target="_blank" rel="noopener">View on BoardGameGeek ↗</a>
+      <p>${(g.categories || []).map(escapeHtml).join(' · ')}</p>
+      <a class="bgg-link" href="https://boardgamegeek.com/boardgame/${g.id}" target="_blank" rel="noopener noreferrer">View on BoardGameGeek ↗</a>
     </div>
   </div>`;
   dialog.showModal();
@@ -126,7 +140,7 @@ async function init() {
     state.games = payload.games || [];
     const cats = [...new Set(state.games.flatMap(g => g.categories || []))].sort();
     category.insertAdjacentHTML('beforeend', cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join(''));
-    document.querySelector('#updatedLabel').textContent = payload.updated ? `Updated ${new Date(payload.updated).toLocaleDateString()}` : 'Cached data';
+    document.querySelector('#updatedLabel').textContent = payload.updated ? `Updated ${new Date(payload.updated).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}` : 'Cached data';
     render();
   } catch (error) {
     document.querySelector('#updatedLabel').textContent = 'Data unavailable';
