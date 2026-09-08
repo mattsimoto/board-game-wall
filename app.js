@@ -33,15 +33,15 @@ function cardSize(game, index) {
   if (state.view !== 'rank') {
     const magnitude = Math.abs(game.rankChange30 || 0);
     if (index === 0 || magnitude >= 30) return 'size-hero';
-    if (index < 4 || magnitude >= 18) return 'size-xl';
-    if (index < 10 || magnitude >= 10) return 'size-lg';
-    if (index < 28 || magnitude >= 4) return 'size-md';
+    if (index < 3 || magnitude >= 18) return 'size-xl';
+    if (index < 8 || magnitude >= 10) return 'size-lg';
+    if (index < 24 || magnitude >= 4) return 'size-md';
     return 'size-sm';
   }
   if (game.rank === 1) return 'size-hero';
-  if (game.rank <= 4) return 'size-xl';
-  if (game.rank <= 12) return 'size-lg';
-  if (game.rank <= 35) return 'size-md';
+  if (game.rank <= 3) return 'size-xl';
+  if (game.rank <= 8) return 'size-lg';
+  if (game.rank <= 24) return 'size-md';
   return 'size-sm';
 }
 function matches(game) {
@@ -71,9 +71,15 @@ function render() {
   const games = sortGames(state.games.filter(matches));
   count.textContent = games.length;
   empty.hidden = games.length > 0;
-  wall.innerHTML = games.map((game, index) => `
+  wall.innerHTML = games.map((game, index) => {
+    const image = escapeHtml(game.image);
+    return `
     <article class="game-card ${cardSize(game,index)}" data-id="${game.id}" tabindex="0" role="button" aria-label="${escapeHtml(game.name)}, BoardGameGeek rank ${game.rank}">
-      <img src="${escapeHtml(game.image)}" alt="${escapeHtml(game.name)} box cover" loading="lazy" referrerpolicy="no-referrer" />
+      <div class="cover-stage" aria-hidden="true">
+        <img class="cover-backdrop" src="${image}" alt="" loading="lazy" referrerpolicy="no-referrer" />
+        <img class="cover-art" src="${image}" alt="" loading="lazy" referrerpolicy="no-referrer" />
+      </div>
+      <span class="sr-only">${escapeHtml(game.name)} box cover</span>
       <div class="card-top">
         <span class="rank-badge">#${game.rank}</span>
         <span class="movement ${movementClass(game.rankChange30)}" title="30-day rank movement">${movementLabel(game.rankChange30)}</span>
@@ -89,13 +95,17 @@ function render() {
           </div>
         </div>
       </div>
-    </article>`).join('');
+    </article>`;
+  }).join('');
 }
 function showGame(id) {
   const g = state.games.find(x => String(x.id) === String(id));
   if (!g) return;
   dialogContent.innerHTML = `<div class="dialog-layout">
-    <img class="dialog-cover" src="${escapeHtml(g.image)}" alt="${escapeHtml(g.name)} box cover" />
+    <div class="dialog-cover-stage">
+      <img class="dialog-cover-backdrop" src="${escapeHtml(g.image)}" alt="" aria-hidden="true" />
+      <img class="dialog-cover" src="${escapeHtml(g.image)}" alt="${escapeHtml(g.name)} box cover" />
+    </div>
     <div class="dialog-copy">
       <div class="dialog-rank">BGG RANK #${g.rank} · <span class="${movementClass(g.rankChange30)}">${movementLabel(g.rankChange30)} / 30 days</span></div>
       <h2>${escapeHtml(g.name)}</h2>
