@@ -1,114 +1,158 @@
 # Board Game Wall
 
-A GitHub Pages dashboard that treats BoardGameGeek rankings like a market wall: highly ranked games get more visual space, while climbers and fallers can be surfaced by recent movement.
+A visual market-style dashboard for BoardGameGeek rankings. Higher-ranked games occupy more space, while filters and movement views make it easy to explore games by category, player count, age, and play time.
 
-## Current build
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-- Responsive dense board-game wall
-- Tile size based on overall BGG rank
-- Alternate views for climbers, fallers, and a momentum-style Hot Now score
-- Filters for category, player count, minimum age, and play time
-- Game detail modal linking back to BoardGameGeek
-- Static JSON cache for fast GitHub Pages delivery
-- Daily GitHub Actions refresh pipeline
-- Rank history storage for 30-day movement
-- Mobile layout
+## Features
 
-## Important: current data is demo data
+- Dense, responsive wall of board-game box covers
+- Tile size based on BoardGameGeek overall rank
+- Views for Overall, Climbers, Fallers, and Hot Now
+- Filters for category, players, minimum age, and play time
+- Game detail modal with rank, rating, metadata, and BGG link
+- Daily rank snapshots for historical movement tracking
+- Server-side BGG API refresh through GitHub Actions
+- Static cached JSON for fast GitHub Pages delivery
+- No application server and no front-end build step
+- Responsive desktop, tablet, and mobile layouts
 
-`data/games.json` ships with a small demo dataset so the interface can be developed before BoardGameGeek API approval. Rankings in that demo file must not be treated as current BGG rankings.
+## How it works
 
-The BGG refresh workflow will replace the demo fields with API values once a token is configured.
+```text
+BoardGameGeek XML API2
+        ↓
+GitHub Actions
+        ↓
+data/games.json
+        +
+data/rank-history.json
+        ↓
+GitHub Pages
+        ↓
+Browser renders the wall
+```
 
-## BoardGameGeek authorization
+The BoardGameGeek application token is used only inside GitHub Actions. It is never included in the public site or sent to visitors' browsers.
 
-BoardGameGeek requires registration and an Application Token for nearly all XML API use.
+## Run your own copy
 
-1. Sign into BoardGameGeek.
-2. Visit `https://boardgamegeek.com/applications`.
-3. Create a non-commercial application for Board Game Wall unless your intended use is commercial.
+### 1. Fork or clone the repository
+
+```bash
+git clone https://github.com/mattsimoto/board-game-wall.git
+cd board-game-wall
+```
+
+The front end is plain HTML, CSS, and JavaScript, so you can open it locally with any simple static web server.
+
+For example:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`.
+
+### 2. Register a BoardGameGeek application
+
+BoardGameGeek requires an approved application and Application Token for XML API access.
+
+1. Sign in to BoardGameGeek.
+2. Visit the BGG Applications page.
+3. Register your application under the appropriate use type.
 4. After approval, create an Application Token.
-5. In this GitHub repository go to **Settings → Secrets and variables → Actions**.
-6. Create a repository secret named `BGG_TOKEN` containing the token.
-7. Open **Actions → Update BoardGameGeek data → Run workflow**.
 
-The token stays in GitHub Actions. It is never sent to visitors' browsers.
+Do not commit the token to the repository.
 
-## GitHub Pages
+### 3. Add the GitHub Actions secret
 
-The app is intentionally plain HTML/CSS/JavaScript, so no build step is required.
+In your repository, open:
 
-When ready to publish:
+**Settings → Secrets and variables → Actions → New repository secret**
 
-1. Make the repository public if needed for your GitHub Pages plan.
-2. Open **Settings → Pages**.
-3. Under Build and deployment choose **Deploy from a branch**.
-4. Select `main` and `/ (root)`.
+Create:
+
+```text
+BGG_TOKEN
+```
+
+Paste your BoardGameGeek Application Token as the value.
+
+### 4. Run the data refresh
+
+Open:
+
+**Actions → Update BoardGameGeek data → Run workflow**
+
+The workflow retrieves current BGG metadata, updates the cached JSON files, records the latest rank snapshot, and commits changed data back to the repository.
+
+The workflow also runs automatically once per day.
+
+## Publish with GitHub Pages
+
+This project is designed to publish directly from the repository root.
+
+1. Open **Settings → Pages**.
+2. Set **Source** to **Deploy from a branch**.
+3. Select `main`.
+4. Select `/ (root)`.
 5. Save.
 
-The expected URL will be:
+For this repository, the expected Pages URL is:
 
 `https://mattsimoto.github.io/board-game-wall/`
 
-## Data architecture
-
-```text
-BGG XML API2
-      ↓
-GitHub Actions (daily)
-      ↓
-data/games.json
-      +
-data/rank-history.json
-      ↓
-GitHub Pages
-      ↓
-Browser renders wall + filters
-```
-
-This avoids client-side API requests, keeps the BGG token secret, and minimizes API traffic.
+Forks will use the corresponding GitHub username and repository name.
 
 ## Rank movement
 
-BGG returns current rank rather than the historical series this project needs. Each daily run therefore records the current rank in `data/rank-history.json`. After enough snapshots exist, `rankChange30` becomes a genuine 30-day comparison.
+BoardGameGeek provides the current rank used by the application, while Board Game Wall builds its own historical series.
 
-The wall can later expose:
+Each daily refresh stores a timestamped rank in `data/rank-history.json`. Movement values become more useful as snapshots accumulate. The current interface includes a 30-day movement field and is structured to support additional periods such as 1-day and 7-day changes.
 
-- 24-hour movement
-- 7-day movement
-- 30-day movement
-- biggest climbers
-- biggest fallers
-- new entries
-- all-time high rank
-
-## Scaling beyond the starter set
-
-The current refresh script enriches the IDs already in `games.json`. This keeps request volume low during development. The next data milestone is to wire in BGG's authorized ranks CSV dump, use its top-ranked game IDs as the candidate set, and then enrich those games through XML API2 in batches of no more than 20.
-
-## Public-launch requirement
-
-BoardGameGeek's XML API terms require public-facing applications using the API to credit BoardGameGeek and display the official **Powered by BGG** logo linked to BoardGameGeek. Add the official logo before making the application public.
-
-## Files
+## Project structure
 
 ```text
-index.html                     Page structure
-styles.css                     Wall/grid design and responsive layout
-app.js                         Filtering, sorting, modal, rendering
-assets/box-placeholder.svg     Development placeholder
-scripts/fetch_bgg.py           Server-side BGG XML API refresh
-.github/workflows/update-bgg.yml
-                               Daily refresh automation
-data/games.json                Cached data consumed by the website
+index.html                         Page structure
+styles.css                         Wall design and responsive layout
+app.js                             Rendering, sorting, filtering, modal behavior
+assets/poweredbyBGGsm.webp         Official BGG attribution artwork
+assets/poweredbyBGG.webp           Alternate BGG attribution artwork
+assets/box-placeholder.svg         Fallback artwork
+scripts/fetch_bgg.py               BoardGameGeek API refresh script
+data/games.json                    Cached game data
+data/rank-history.json             Historical rank snapshots
+.github/workflows/update-bgg.yml   Scheduled/manual refresh workflow
+.nojekyll                          Disables Jekyll processing on GitHub Pages
 ```
 
-## Intended next steps
+## BoardGameGeek attribution
 
-1. Register the BGG application and add `BGG_TOKEN`.
-2. Run the refresh workflow once to replace placeholder art with real BGG images and current metadata.
-3. Add the authorized BGG ranking CSV as the discovery source so the wall can expand to the top 100–500 games.
-4. Accumulate rank snapshots.
-5. Add 1-day / 7-day / 30-day movement toggles.
-6. Add the official Powered by BGG logo.
-7. Enable GitHub Pages and make the repository public when ready.
+Board Game Wall uses data supplied by BoardGameGeek and displays the required **Powered by BGG** attribution linked to BoardGameGeek.
+
+BoardGameGeek, BGG, the Powered by BGG logo, game metadata, game images, and other BoardGameGeek-provided content are owned by their respective rights holders and are **not** licensed under this repository's MIT License.
+
+If you fork or redistribute this project while continuing to use the BoardGameGeek API, you are responsible for complying with the current BoardGameGeek API terms, branding requirements, rate limits, and application-registration requirements.
+
+This project is not affiliated with or endorsed by BoardGameGeek.
+
+## License
+
+The original source code in this repository is released under the [MIT License](LICENSE).
+
+The MIT License applies to the project's original HTML, CSS, JavaScript, Python, workflow configuration, and documentation. It does not grant rights to third-party trademarks, logos, game artwork, BoardGameGeek content, or data supplied by external services.
+
+## Contributing
+
+Issues and pull requests are welcome. Useful areas for future work include:
+
+- 1-day and 7-day movement views
+- larger ranked-game discovery sets
+- new-entry tracking
+- all-time-high rank tracking
+- additional filter and sorting options
+- accessibility improvements
+- performance improvements for larger datasets
+
+When contributing, do not commit BoardGameGeek API tokens or other secrets.
