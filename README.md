@@ -23,11 +23,13 @@ A visual market-style dashboard for the current BoardGameGeek Top 250. Higher-ra
 ## How it works
 
 ```text
-BoardGameGeek rank CSV
+Logged-in BoardGameGeek session
+        ↓
+Official BGG rank CSV
         ↓
 Current Top 250 IDs + ranks
         ↓
-BoardGameGeek XML API2
+BoardGameGeek XML API2 + Application Token
         ↓
 Metadata enrichment in batches of 20
         ↓
@@ -42,9 +44,9 @@ GitHub Pages
 Browser renders wall + 1D / 7D / 30D movement
 ```
 
-BoardGameGeek identifies its rank CSV as the preferred source for retrieving game names and ranks at scale. Board Game Wall uses that ranking source for discovery, then enriches the current Top 250 through XML API2.
+BoardGameGeek identifies its rank CSV as the preferred source for retrieving game names and ranks at scale. The rank-dump download is available to logged-in BGG users, so Board Game Wall creates a short-lived authenticated web session inside GitHub Actions to obtain the official CSV. It then uses an approved BGG Application Token for XML API2 enrichment.
 
-The BoardGameGeek application token is used only inside GitHub Actions. It is never included in the public site or sent to visitors' browsers.
+BGG login credentials, the application token, and session cookies never appear in the public site. Login credentials and the token are supplied to the workflow through GitHub Actions secrets, and the web-session cookies exist only in memory during a refresh run.
 
 ## Run your own copy
 
@@ -65,28 +67,33 @@ Then open `http://localhost:8000`.
 
 ### 2. Register a BoardGameGeek application
 
-BoardGameGeek requires an approved application and Application Token for API access.
+BoardGameGeek requires an approved application and Application Token for XML API access.
 
 1. Sign in to BoardGameGeek.
 2. Visit the BGG Applications page.
 3. Register your application under the appropriate use type.
 4. After approval, create an Application Token.
 
-Do not commit the token to the repository.
+Do not commit the token or BGG login credentials to the repository.
 
-### 3. Add the GitHub Actions secret
+### 3. Add GitHub Actions secrets
 
 In your repository, open:
 
 **Settings → Secrets and variables → Actions → New repository secret**
 
-Create:
+Create these three repository secrets:
 
 ```text
 BGG_TOKEN
+BGG_USERNAME
+BGG_PASSWORD
 ```
 
-Paste your BoardGameGeek Application Token as the value.
+- `BGG_TOKEN` is the approved BoardGameGeek Application Token used for XML API2 requests.
+- `BGG_USERNAME` and `BGG_PASSWORD` are used only to establish the logged-in BGG session required to download the official rank CSV.
+
+For a public fork, you may prefer to use a dedicated BoardGameGeek account for the rank-dump session rather than storing credentials for your primary BGG account. In either case, keep all three values in GitHub Actions secrets and never commit them to source control.
 
 ### 4. Run the data refresh
 
@@ -94,7 +101,7 @@ Open:
 
 **Actions → Update BoardGameGeek data → Run workflow**
 
-The workflow downloads the authorized BGG ranking source, selects the current Top 250 non-expansion games, enriches them through XML API2, records daily rank snapshots, calculates movement, and commits the resulting JSON back to the repository.
+The workflow signs in to BGG, downloads the official current rank CSV, selects the Top 250 non-expansion games, enriches them through XML API2, records daily rank snapshots, calculates movement, and commits the resulting JSON back to the repository.
 
 The workflow also runs automatically once per day. `BGG_TOP_N` is set to `250` in the workflow and can be changed if a fork wants a different wall size.
 
@@ -132,7 +139,7 @@ The historical file retains roughly 45 days of snapshots, including games that l
 
 ## Top 250 discovery
 
-The candidate pool is rebuilt on every refresh rather than using a fixed list of game IDs. This means titles can automatically:
+The candidate pool is rebuilt from BGG's official rank CSV on every refresh rather than using a fixed list of game IDs. This means titles can automatically:
 
 - enter the Top 250
 - leave the Top 250
@@ -141,7 +148,7 @@ The candidate pool is rebuilt on every refresh rather than using a fixed list of
 
 The rank CSV determines membership and overall rank. XML API2 supplies the richer fields used by the wall, including box images, categories, player counts, age, play time, and ratings.
 
-To reduce load, XML enrichment is performed sequentially in batches of at most 20 games with a pause between requests.
+To reduce API load, XML enrichment is performed sequentially in batches of at most 20 games with a pause between requests.
 
 ## Project structure
 
@@ -153,9 +160,10 @@ app.js                             Rendering, movement, sorting, filtering, moda
 assets/poweredbyBGGsm.webp         Official BGG attribution artwork
 assets/poweredbyBGG.webp           Alternate BGG attribution artwork
 assets/box-placeholder.svg         Fallback artwork
-scripts/fetch_bgg.py               Rank discovery + XML API enrichment + history
- data/games.json                   Cached current Top 250 consumed by the website
- data/rank-history.json            Historical daily rank snapshots
+scripts/refresh_top250.py          Logged-in official rank CSV download + refresh orchestration
+scripts/fetch_bgg.py               XML enrichment and rank-history helpers
+data/games.json                    Cached current Top 250 consumed by the website
+data/rank-history.json             Historical daily rank snapshots
 .github/workflows/update-bgg.yml   Scheduled/manual refresh workflow
 .nojekyll                          Disables Jekyll processing on GitHub Pages
 ```
@@ -188,4 +196,4 @@ Issues and pull requests are welcome. Useful areas for future work include:
 - accessibility improvements
 - performance improvements for larger datasets
 
-When contributing, do not commit BoardGameGeek API tokens or other secrets.
+When contributing, do not commit BoardGameGeek API tokens, account credentials, or other secrets.
