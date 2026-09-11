@@ -1,52 +1,50 @@
 # Board Game Wall
 
-A visual market-style dashboard for the current BoardGameGeek Top 250. Higher-ranked games occupy more space, while filters and movement views make it easy to explore games by category, player count, age, play time, and recent rank change.
+A visual market-style dashboard for BoardGameGeek rankings. Higher-ranked games occupy more space, while filters and movement views make it easy to explore games by category, player count, age, play time, and recent rank change.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## Features
 
-- Automatically discovers the current BoardGameGeek Top 250
 - Dense, responsive wall of board-game box covers
-- Tile size based on current BGG overall rank
-- Views for Overall, Climbers, Fallers, and Hot Now
+- Target display of the live BGG Top 250
+- Buffered Top 1000 candidate pool for rank discovery
+- Daily BGG XML API2 rank and metadata refresh
+- BGG Hot items folded into the candidate pool to catch newly surging games
+- Tile size based on current overall rank
+- Overall, Climbers, Fallers, and Hot Now views
 - Selectable 1-day, 7-day, and 30-day rank movement
 - Filters for category, players, minimum age, and play time
-- Game detail modal with all three movement periods, rating, metadata, and BGG link
-- Daily historical rank snapshots
-- Server-side BGG refresh through GitHub Actions
+- Game detail modal with rank, movement, rating, metadata, and BGG link
 - Static cached JSON for fast GitHub Pages delivery
-- BGG thumbnails for the wall and full-size artwork for game details
-- No application server and no front-end build step
+- No application server or front-end build step
 - Responsive desktop, tablet, and mobile layouts
 
 ## How it works
 
+BoardGameGeek publishes an official rank CSV containing game IDs and ranks and identifies it as the preferred bulk ranking source. The current BGG site may require an interactive logged-in browser session to retrieve that file, which makes unattended downloads from hosted CI runners unreliable.
+
+Board Game Wall therefore uses the official CSV as a **one-time candidate seed**, not as a daily dependency.
+
 ```text
-Logged-in BoardGameGeek session
+Official BGG rank CSV (one-time seed)
         ↓
-Official BGG rank CSV
+Top 1000 candidate IDs
         ↓
-Current Top 250 IDs + ranks
+data/rank-candidates.json
         ↓
-BoardGameGeek XML API2 + Application Token
+Daily BGG XML API2 refresh + BGG Hot IDs
         ↓
-Metadata enrichment in batches of 20
+Current live ranks for buffered candidate pool
         ↓
-GitHub Actions
+Publish best 250
         ↓
-data/games.json
-        +
-data/rank-history.json
+data/games.json + data/rank-history.json
         ↓
 GitHub Pages
-        ↓
-Browser renders wall + 1D / 7D / 30D movement
 ```
 
-BoardGameGeek identifies its rank CSV as the preferred source for retrieving game names and ranks at scale. The rank-dump download is available to logged-in BGG users, so Board Game Wall creates a short-lived authenticated web session inside GitHub Actions to obtain the official CSV. It then uses an approved BGG Application Token for XML API2 enrichment.
-
-BGG login credentials, the application token, and session cookies never appear in the public site. Login credentials and the token are supplied to the workflow through GitHub Actions secrets, and the web-session cookies exist only in memory during a refresh run.
+The buffer means the site does not need to hit BGG's protected rank-download page every day. A game can move into or out of the displayed Top 250 based on its live XML API2 rank, while the BGG Hot list adds emerging titles to the candidate pool automatically.
 
 ## Run your own copy
 
@@ -57,7 +55,7 @@ git clone https://github.com/mattsimoto/board-game-wall.git
 cd board-game-wall
 ```
 
-The front end is plain HTML, CSS, and JavaScript, so you can run it locally with any simple static web server.
+Run the front end locally with any static server:
 
 ```bash
 python3 -m http.server 8000
@@ -67,47 +65,76 @@ Then open `http://localhost:8000`.
 
 ### 2. Register a BoardGameGeek application
 
-BoardGameGeek requires an approved application and Application Token for XML API access.
+BoardGameGeek requires an approved Application Token for XML API use.
 
 1. Sign in to BoardGameGeek.
 2. Visit the BGG Applications page.
-3. Register your application under the appropriate use type.
+3. Register the application under the appropriate use type.
 4. After approval, create an Application Token.
 
-Do not commit the token or BGG login credentials to the repository.
+Never commit the token to source control.
 
-### 3. Add GitHub Actions secrets
+### 3. Add the GitHub Actions secret
 
-In your repository, open:
+Open:
 
 **Settings → Secrets and variables → Actions → New repository secret**
 
-Create these three repository secrets:
+Create one secret:
 
 ```text
 BGG_TOKEN
-BGG_USERNAME
-BGG_PASSWORD
 ```
 
-- `BGG_TOKEN` is the approved BoardGameGeek Application Token used for XML API2 requests.
-- `BGG_USERNAME` and `BGG_PASSWORD` are used only to establish the logged-in BGG session required to download the official rank CSV.
+The token is used only by GitHub Actions and is never sent to site visitors.
 
-For a public fork, you may prefer to use a dedicated BoardGameGeek account for the rank-dump session rather than storing credentials for your primary BGG account. In either case, keep all three values in GitHub Actions secrets and never commit them to source control.
+### 4. Seed the ranking candidate pool once
 
-### 4. Run the data refresh
+While logged into BoardGameGeek, download the official rank dump from:
+
+`https://boardgamegeek.com/data_dumps/bg_ranks`
+
+Then run either form locally:
+
+```bash
+python scripts/seed_candidates.py /path/to/boardgames_ranks.csv
+```
+
+or:
+
+```bash
+python scripts/seed_candidates.py /path/to/boardgames_ranks_YYYY-MM-DD.zip
+```
+
+This writes only the best 1,000 non-expansion BGG IDs to:
+
+```text
+data/rank-candidates.json
+```
+
+Commit that compact candidate file. The full BGG dump does not need to live in the repository.
+
+If no candidate file exists yet, the scheduled workflow safely refreshes only the games already present in `data/games.json` rather than failing the public site.
+
+### 5. Run the refresh
 
 Open:
 
 **Actions → Update BoardGameGeek data → Run workflow**
 
-The workflow signs in to BGG, downloads the official current rank CSV, selects the Top 250 non-expansion games, enriches them through XML API2, records daily rank snapshots, calculates movement, and commits the resulting JSON back to the repository.
+Once the candidate pool is seeded, each run:
 
-The workflow also runs automatically once per day. `BGG_TOP_N` is set to `250` in the workflow and can be changed if a fork wants a different wall size.
+1. Loads the buffered candidate IDs.
+2. Adds current BGG Hot game IDs.
+3. Retrieves live XML API2 stats in batches of at most 20.
+4. Sorts candidates by their current BGG overall rank.
+5. Publishes the best 250 to `data/games.json`.
+6. Retains the best 1,000 candidates plus Hot items for the next run.
+7. Records rank snapshots for movement calculations.
+
+The workflow also runs automatically once per day.
 
 ## Publish with GitHub Pages
-
-This project is designed to publish directly from the repository root.
 
 1. Open **Settings → Pages**.
 2. Set **Source** to **Deploy from a branch**.
@@ -115,55 +142,44 @@ This project is designed to publish directly from the repository root.
 4. Select `/ (root)`.
 5. Save.
 
-For this repository, the expected Pages URL is:
+For this repository:
 
 `https://mattsimoto.github.io/board-game-wall/`
 
-Forks will use the corresponding GitHub username and repository name.
-
 ## Rank movement
 
-Board Game Wall stores one rank snapshot per game per UTC calendar day in `data/rank-history.json`.
+Board Game Wall stores daily rank snapshots in `data/rank-history.json` and calculates:
 
-Each refresh calculates:
+- `rankChange1` — approximately 1 day
+- `rankChange7` — approximately 7 days
+- `rankChange30` — approximately 30 days
 
-- `rankChange1` — change from approximately one day ago
-- `rankChange7` — change from approximately seven days ago
-- `rankChange30` — change from approximately thirty days ago
+A positive number means the game climbed the rankings. A negative number means it fell.
 
-A positive number means the game moved **up** the ranking. A negative number means it moved **down**.
+When there is not enough history for a period, the interface displays an em dash rather than falsely reporting zero movement. The buffered pool records rank history before a game reaches the displayed Top 250, so future entrants can often arrive with useful movement history already available.
 
-A period remains unavailable until enough history exists for that game. The interface displays an em dash rather than falsely reporting `0` while history is still being collected. This matters especially when a title first enters the Top 250.
+## Candidate-pool tradeoff
 
-The historical file retains roughly 45 days of snapshots, including games that leave the current Top 250, so a title that later re-enters can retain useful recent history.
+The buffered approach avoids bypassing BGG's browser-verification layer and greatly reduces dependence on the protected bulk-download page. It is intentionally conservative about API traffic.
 
-## Top 250 discovery
-
-The candidate pool is rebuilt from BGG's official rank CSV on every refresh rather than using a fixed list of game IDs. This means titles can automatically:
-
-- enter the Top 250
-- leave the Top 250
-- change rank
-- appear in Climbers and Fallers as history accumulates
-
-The rank CSV determines membership and overall rank. XML API2 supplies the richer fields used by the wall, including box images, categories, player counts, age, play time, and ratings.
-
-To reduce API load, XML enrichment is performed sequentially in batches of at most 20 games with a pause between requests.
+A title outside the candidate pool can still be discovered when it appears in BGG Hot. For maximum coverage, refresh the Top 1000 seed from a newly downloaded official rank CSV occasionally. The daily wall itself continues to use live XML API2 ranks between seed refreshes.
 
 ## Project structure
 
 ```text
 index.html                         Page structure
 styles.css                         Wall design and responsive layout
-movement.css                       Movement-period control styles
-app.js                             Rendering, movement, sorting, filtering, modal behavior
+movement.css                       Movement-period controls
+app.js                             Rendering, movement, sorting, filtering, modal
 assets/poweredbyBGGsm.webp         Official BGG attribution artwork
 assets/poweredbyBGG.webp           Alternate BGG attribution artwork
 assets/box-placeholder.svg         Fallback artwork
-scripts/refresh_top250.py          Logged-in official rank CSV download + refresh orchestration
-scripts/fetch_bgg.py               XML enrichment and rank-history helpers
-data/games.json                    Cached current Top 250 consumed by the website
+scripts/fetch_bgg.py               Shared BGG XML/history helpers
+scripts/refresh_rank_pool.py       Daily buffered ranking refresh
+scripts/seed_candidates.py         One-time official CSV/ZIP seed utility
+data/games.json                    Cached games consumed by the website
 data/rank-history.json             Historical daily rank snapshots
+data/rank-candidates.json          Buffered candidate IDs, once seeded
 .github/workflows/update-bgg.yml   Scheduled/manual refresh workflow
 .nojekyll                          Disables Jekyll processing on GitHub Pages
 ```
@@ -186,14 +202,6 @@ The MIT License applies to the project's original HTML, CSS, JavaScript, Python,
 
 ## Contributing
 
-Issues and pull requests are welcome. Useful areas for future work include:
+Issues and pull requests are welcome. Useful areas include new-entry badges, all-time-high rank tracking, longer history, search, additional filters, accessibility, and performance improvements.
 
-- new-entry badges and Top 250 entry dates
-- all-time-high rank tracking
-- longer historical views
-- search
-- additional filters and sorting options
-- accessibility improvements
-- performance improvements for larger datasets
-
-When contributing, do not commit BoardGameGeek API tokens, account credentials, or other secrets.
+Do not commit BoardGameGeek Application Tokens, account credentials, session cookies, or other secrets.
