@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="A live visual wall of BoardGameGeek rankings, sized by popularity and rank movement." />
+  <meta name="description" content="A live visual wall of BoardGameGeek's Top 250 games, sized by popularity and rank movement." />
   <title>Board Game Wall</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
     <div class="brand-block">
       <p class="eyebrow">LIVE BOARD GAME MARKET</p>
       <h1>Board Game Wall</h1>
-      <p class="lede">The biggest games get the most space. Filter the wall to find what fits your table.</p>
+      <p class="lede">The current BGG Top 250, visualized by rank. Filter the wall to find what fits your table.</p>
     </div>
     <div class="header-utility">
       <div class="status-panel">
@@ -26,11 +26,25 @@
   </header>
 
   <section class="controls" aria-label="Game filters">
-    <div class="view-tabs" id="viewControls" aria-label="Wall view">
-      <button class="active" data-view="rank">Overall</button>
-      <button data-view="climbers">Climbers</button>
-      <button data-view="fallers">Fallers</button>
-      <button data-view="hot">Hot Now</button>
+    <div class="controls-left">
+      <div class="control-block">
+        <span class="control-caption">View</span>
+        <div class="view-tabs" id="viewControls" aria-label="Wall view">
+          <button class="active" data-view="rank">Overall</button>
+          <button data-view="climbers">Climbers</button>
+          <button data-view="fallers">Fallers</button>
+          <button data-view="hot">Hot Now</button>
+        </div>
+      </div>
+
+      <div class="control-block">
+        <span class="control-caption" id="movementPeriodLabel">1D movement</span>
+        <div class="period-tabs" id="periodControls" aria-label="Rank movement period">
+          <button class="active" data-period="1">1D</button>
+          <button data-period="7">7D</button>
+          <button data-period="30">30D</button>
+        </div>
+      </div>
     </div>
 
     <div class="filter-strip">
@@ -77,7 +91,10 @@
 
   <main>
     <section class="summary-bar">
-      <div class="summary-count"><strong id="gameCount">0</strong><span>games</span></div>
+      <div class="summary-count">
+        <strong id="gameCount">0</strong><span>games</span>
+        <span class="pool-label" id="poolLabel">Current BGG Top 250</span>
+      </div>
       <div class="legend"><span class="move up">▲ rising</span><span class="move down">▼ falling</span><span class="move flat">• steady</span></div>
     </section>
 
