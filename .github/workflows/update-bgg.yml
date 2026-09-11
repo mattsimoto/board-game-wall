@@ -18,7 +18,7 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,11 +29,15 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4
+        run: |
+          pip install requests beautifulsoup4 playwright
+          python -m playwright install --with-deps chromium
 
       - name: Refresh current BGG Top 250
         env:
           BGG_TOKEN: ${{ secrets.BGG_TOKEN }}
+          BGG_USERNAME: ${{ secrets.BGG_USERNAME }}
+          BGG_PASSWORD: ${{ secrets.BGG_PASSWORD }}
           BGG_TOP_N: '250'
         run: python scripts/refresh_top250.py
 
