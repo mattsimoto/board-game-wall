@@ -4,6 +4,13 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '17 8 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/refresh_top250.py'
+      - 'scripts/fetch_bgg.py'
+      - '.github/workflows/update-bgg.yml'
 
 permissions:
   contents: write
@@ -27,8 +34,6 @@ jobs:
       - name: Refresh current BGG Top 250
         env:
           BGG_TOKEN: ${{ secrets.BGG_TOKEN }}
-          BGG_USERNAME: ${{ secrets.BGG_USERNAME }}
-          BGG_PASSWORD: ${{ secrets.BGG_PASSWORD }}
           BGG_TOP_N: '250'
         run: python scripts/refresh_top250.py
 
