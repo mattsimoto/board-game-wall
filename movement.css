@@ -1,0 +1,64 @@
+.controls-left {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.control-caption {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.period-tabs {
+  display: flex;
+  gap: 4px;
+}
+.period-tabs button {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #121720;
+  color: var(--muted);
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+.period-tabs button.active {
+  background: #eef2f7;
+  border-color: #eef2f7;
+  color: #10141b;
+}
+.pool-label {
+  margin-left: 8px;
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+}
+@media (max-width: 1200px) {
+  .controls-left {
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .controls-left {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .view-tabs,
+  .period-tabs {
+    overflow-x: auto;
+    width: 100%;
+  }
+  .pool-label {
+    display: none;
+  }
+}
