@@ -11,6 +11,7 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -23,9 +24,10 @@ jobs:
       - name: Install dependency
         run: pip install requests
 
-      - name: Refresh game data
+      - name: Refresh current BGG Top 250
         env:
           BGG_TOKEN: ${{ secrets.BGG_TOKEN }}
+          BGG_TOP_N: '250'
         run: python scripts/fetch_bgg.py
 
       - name: Commit changed data
@@ -36,6 +38,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No data changes"
           else
-            git commit -m "Update BoardGameGeek data"
+            git commit -m "Update BoardGameGeek Top 250 data"
             git push
           fi
