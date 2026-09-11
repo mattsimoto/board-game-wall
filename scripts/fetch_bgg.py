@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
 import requests
+from bs4 import BeautifulSoup
 import xml.etree.ElementTree as ET
 
 TOKEN = os.environ.get("BGG_TOKEN", "").strip()
@@ -51,13 +52,13 @@ def headers_for(url):
     return AUTH_HEADERS if host in BGG_HOSTS else PUBLIC_HEADERS
 
 
-def request_bytes(url, *, timeout=90):
+def request_bytes(url, *, timeout=90, use_auth=True):
     last_error = None
     for attempt in range(5):
         try:
             response = requests.get(
                 url,
-                headers=headers_for(url),
+                headers=headers_for(url) if use_auth else PUBLIC_HEADERS,
                 timeout=timeout,
                 allow_redirects=True,
             )
@@ -148,9 +149,7 @@ def parse_float(value, default=0.0):
         return default
 
 
-def load_top_ranked_games():
-    payload, source_url = download_rank_dump()
-    csv_bytes = extract_csv_bytes(payload, source_url)
+def parse_rank_csv(csv_bytes):
     text = csv_bytes.decode("utf-8-sig", errors="replace")
     reader = csv.DictReader(io.StringIO(text))
 
@@ -173,17 +172,93 @@ def load_top_ranked_games():
                 "csvRating": parse_float(row.get("average")),
             }
         )
+    return ranked
+
+
+def load_top_from_browse():
+    ranked = []
+    seen = set()
+    page = 1
+
+    while len(ranked) < TOP_N:
+        url = (
+            f"https://boardgamegeek.com/browse/boardgame/page/{page}"
+            "?sort=rank&sortdir=asc"
+        )
+        response = request_bytes(url, timeout=60, use_auth=False)
+        soup = BeautifulSoup(response.text, "html.parser")
+        rows = soup.find_all("tr", id="row_")
+        if not rows:
+            raise RuntimeError(f"No ranked game rows found on BGG browse page {page}.")
+
+        for row in rows:
+            name_cell = row.select_one(".collection_objectname")
+            rank_cell = row.select_one(".collection_rank")
+            if not name_cell or not rank_cell:
+                continue
+
+            link = name_cell.select_one("a.primary") or name_cell.select_one(
+                "a[href*='/boardgame/']"
+            )
+            if not link:
+                continue
+
+            href = link.get("href", "")
+            href_parts = href.split("/")
+            try:
+                boardgame_index = href_parts.index("boardgame")
+                game_id = int(href_parts[boardgame_index + 1])
+            except (ValueError, IndexError):
+                continue
+
+            rank_text = rank_cell.get_text(" ", strip=True)
+            rank_digits = "".join(ch if ch.isdigit() else " " for ch in rank_text).split()
+            if not rank_digits:
+                continue
+            rank = int(rank_digits[0])
+
+            if game_id in seen or rank <= 0:
+                continue
+
+            seen.add(game_id)
+            ranked.append(
+                {
+                    "id": game_id,
+                    "rank": rank,
+                    "csvName": link.get_text(" ", strip=True),
+                    "csvRating": 0.0,
+                }
+            )
+
+        page += 1
+        if len(ranked) < TOP_N:
+            time.sleep(5)
+        if page > 10:
+            raise RuntimeError("Unable to discover enough ranked games from BGG browse pages.")
 
     ranked.sort(key=lambda item: item["rank"])
     top = ranked[:TOP_N]
-    if len(top) < TOP_N:
-        raise RuntimeError(
-            f"BGG rank dump contained only {len(top)} usable ranked games; "
-            f"expected at least {TOP_N}."
-        )
-
-    print(f"Discovered current BGG Top {len(top)} from rank dump.")
+    print(f"Discovered current BGG Top {len(top)} from browse ranking pages.")
     return top
+
+
+def load_top_ranked_games():
+    try:
+        payload, source_url = download_rank_dump()
+        csv_bytes = extract_csv_bytes(payload, source_url)
+        ranked = parse_rank_csv(csv_bytes)
+        ranked.sort(key=lambda item: item["rank"])
+        top = ranked[:TOP_N]
+        if len(top) < TOP_N:
+            raise RuntimeError(
+                f"BGG rank dump contained only {len(top)} usable ranked games; "
+                f"expected at least {TOP_N}."
+            )
+        print(f"Discovered current BGG Top {len(top)} from rank dump.")
+        return top, "BoardGameGeek rank CSV"
+    except Exception as exc:
+        print(f"Rank CSV unavailable ({exc}). Falling back to BGG browse ranking pages.")
+        return load_top_from_browse(), "BoardGameGeek browse ranking"
 
 
 def int_value(node, tag, default=0):
@@ -356,7 +431,7 @@ def record_snapshot(history, game_id, rank, now):
     history[key] = kept
 
 
-def save(games):
+def save(games, rank_source):
     history = load_history()
     now = datetime.now(timezone.utc)
 
@@ -390,7 +465,8 @@ def save(games):
         json.dumps(
             {
                 "updated": timestamp,
-                "source": "BoardGameGeek rank CSV + XML API2",
+                "source": f"{rank_source} + XML API2",
+                "rankSource": rank_source,
                 "topN": TOP_N,
                 "movementPeriods": [1, 7, 30],
                 "games": games,
@@ -404,4 +480,5 @@ def save(games):
 
 
 if __name__ == "__main__":
-    save(enrich(load_top_ranked_games()))
+    ranked_games, rank_source = load_top_ranked_games()
+    save(enrich(ranked_games), rank_source)
