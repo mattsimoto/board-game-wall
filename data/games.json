@@ -1,6 +1,13 @@
 {
-  "updated": "2026-09-10T12:56:29.324463Z",
-  "source": "BoardGameGeek XML API2",
+  "updated": "2026-09-11T09:42:32.018125Z",
+  "source": "BGG XML API2 existing set + XML API2",
+  "rankSource": "BGG XML API2 existing set",
+  "topN": 20,
+  "movementPeriods": [
+    1,
+    7,
+    30
+  ],
   "games": [
     {
       "id": 224517,
@@ -21,8 +28,11 @@
         "Trains",
         "Transportation"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/x3zxjr-Vw5iU4yDPg70Jgw__small/img/o18rjEemoWaVru9Y2TyPwuIaRfE=/fit-in/200x150/filters:strip_icc()/pic3490053.jpg",
       "image": "https://cf.geekdo-images.com/x3zxjr-Vw5iU4yDPg70Jgw__original/img/FpyxH41Y6_ROoePAilPNEhXnzO8=/0x0/filters:format(jpeg)/pic3490053.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 99
     },
     {
@@ -41,8 +51,11 @@
         "Card Game",
         "Environmental"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/SoU8p28Sk1s8MSvoM4N8pQ__small/img/4KuHNTWSMPf8vTNDKSRMMI3oOv8=/fit-in/200x150/filters:strip_icc()/pic6293412.jpg",
       "image": "https://cf.geekdo-images.com/SoU8p28Sk1s8MSvoM4N8pQ__original/img/g4S18szTdrXCdIwVKzMKrZrYAcM=/0x0/filters:format(jpeg)/pic6293412.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 98
     },
     {
@@ -60,8 +73,11 @@
         "Environmental",
         "Medical"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/-Qer2BBPG7qGGDu6KcVDIw__small/img/NQQcjS31TO0DE246N9rpt0hd9eo=/fit-in/200x150/filters:strip_icc()/pic2452831.png",
       "image": "https://cf.geekdo-images.com/-Qer2BBPG7qGGDu6KcVDIw__original/img/PlzAH7swN1nsFxOXbfUvE3TkE5w=/0x0/filters:format(png)/pic2452831.png",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 97
     },
     {
@@ -82,8 +98,11 @@
         "Fighting",
         "Miniatures"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/sZYp_3BTDGjh2unaZfZmuA__small/img/veqFeP4d_3zNhFc3GNBkV95rBEQ=/fit-in/200x150/filters:strip_icc()/pic2437871.jpg",
       "image": "https://cf.geekdo-images.com/sZYp_3BTDGjh2unaZfZmuA__original/img/7d-lj5Gd1e8PFnD97LYFah2c45M=/0x0/filters:format(jpeg)/pic2437871.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 96
     },
     {
@@ -102,8 +121,11 @@
         "Novel-based",
         "Science Fiction"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/UVUkjMV_Q2paVUIUP30Vvw__small/img/H6qmxJrRFjtOAPZOfDoZ480-46I=/fit-in/200x150/filters:strip_icc()/pic7664424.jpg",
       "image": "https://cf.geekdo-images.com/UVUkjMV_Q2paVUIUP30Vvw__original/img/BoUtCkd1NRO0bR1R5EwL51xIuXA=/0x0/filters:format(jpeg)/pic7664424.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 95
     },
     {
@@ -123,8 +145,11 @@
         "Political",
         "Science Fiction"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/PhjygpWSo-0labGrPBMyyg__small/img/JGgY-nBmkyB8WRp8vcoBLlNMQ5U=/fit-in/200x150/filters:strip_icc()/pic5666597.jpg",
       "image": "https://cf.geekdo-images.com/PhjygpWSo-0labGrPBMyyg__original/img/mZzaBAEEJpMlHWWmC0R6Su0OibQ=/0x0/filters:format(jpeg)/pic5666597.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 94
     },
     {
@@ -149,8 +174,11 @@
         "Territory Building",
         "Wargame"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/_Ppn5lssO5OaildSE-FgFA__small/img/lfEukJE0JsoZZObaF9K9YnFp62E=/fit-in/200x150/filters:strip_icc()/pic3727516.jpg",
       "image": "https://cf.geekdo-images.com/_Ppn5lssO5OaildSE-FgFA__original/img/kVpZ0Maa_LeQGWxOqsYKP3N4KUY=/0x0/filters:format(jpeg)/pic3727516.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 93
     },
     {
@@ -171,8 +199,11 @@
         "Territory Building",
         "Wargame"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/ImPgGag98W6gpV1KV812aA__small/img/X-lBBdG4uO6LT0y1vXxCN4jdR4M=/fit-in/200x150/filters:strip_icc()/pic1215633.jpg",
       "image": "https://cf.geekdo-images.com/ImPgGag98W6gpV1KV812aA__original/img/38jB7fN07DwlrGKYAf-J0vsNdgs=/0x0/filters:format(jpeg)/pic1215633.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 92
     },
     {
@@ -195,8 +226,11 @@
         "Space Exploration",
         "Territory Building"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/wg9oOLcsKvDesSUdZQ4rxw__small/img/BTxqxgYay5tHJfVoJ2NF5g43_gA=/fit-in/200x150/filters:strip_icc()/pic3536616.jpg",
       "image": "https://cf.geekdo-images.com/wg9oOLcsKvDesSUdZQ4rxw__original/img/thIqWDnH9utKuoKVEUqveDixprI=/0x0/filters:format(jpeg)/pic3536616.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 91
     },
     {
@@ -217,8 +251,11 @@
         "Space Exploration",
         "Wargame"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/7SrPNGBKg9IIsP4UQpOi8g__small/img/gAxzddRVQiRdjZHYFUZ2xc5Jlbw=/fit-in/200x150/filters:strip_icc()/pic4325841.jpg",
       "image": "https://cf.geekdo-images.com/7SrPNGBKg9IIsP4UQpOi8g__original/img/GKueTbkCk2Ramf6ai8mDj-BP6cI=/0x0/filters:format(jpeg)/pic4325841.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 90
     },
     {
@@ -238,8 +275,11 @@
         "Mythology",
         "Territory Building"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/kjCm4ZvPjIZxS-mYgSPy1g__small/img/aUlIih2_R7P8IYKeyNl2heLQbu8=/fit-in/200x150/filters:strip_icc()/pic7013651.jpg",
       "image": "https://cf.geekdo-images.com/kjCm4ZvPjIZxS-mYgSPy1g__original/img/9uLd9C3XAvInLCLhAoXqKVk56zs=/0x0/filters:format(jpeg)/pic7013651.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 89
     },
     {
@@ -260,8 +300,11 @@
         "Fighting",
         "Miniatures"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/_HhIdavYW-hid20Iq3hhmg__small/img/OMkN_E5eyWrkID_cHCnQEbIixGM=/fit-in/200x150/filters:strip_icc()/pic5055631.jpg",
       "image": "https://cf.geekdo-images.com/_HhIdavYW-hid20Iq3hhmg__original/img/PBzsLRqNKQKJxGnzpb7o3qLWPQM=/0x0/filters:format(jpeg)/pic5055631.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 88
     },
     {
@@ -282,8 +325,11 @@
         "Space Exploration",
         "Territory Building"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/hGWFm3hbMlCDsfCsauOQ4g__small/img/NNG7Ijyx4evp5gcVReis9i0koas=/fit-in/200x150/filters:strip_icc()/pic5375625.png",
       "image": "https://cf.geekdo-images.com/hGWFm3hbMlCDsfCsauOQ4g__original/img/tjlflQtUPFiTpLpwk1NCVCS29Ic=/0x0/filters:format(png)/pic5375625.png",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 87
     },
     {
@@ -302,8 +348,11 @@
         "Medieval",
         "Territory Building"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/sH2YTQ10dHj1ibfS-KKtGA__small/img/f5zFXdTcH9RNY0iMNBppd8D-_r0=/fit-in/200x150/filters:strip_icc()/pic8745814.jpg",
       "image": "https://cf.geekdo-images.com/sH2YTQ10dHj1ibfS-KKtGA__original/img/L_gsMsuhbAe0kyq1QLAmyeKOeSs=/0x0/filters:format(jpeg)/pic8745814.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 83
     },
     {
@@ -322,8 +371,11 @@
         "Civilization",
         "Economic"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/fVwPntkJKgaEo0rIC0RwpA__small/img/31usGlzlBReEFf60bcgbvDTjwCg=/fit-in/200x150/filters:strip_icc()/pic2663291.jpg",
       "image": "https://cf.geekdo-images.com/fVwPntkJKgaEo0rIC0RwpA__original/img/1jawNpljTXwnT4km_2CjGwoUPR8=/0x0/filters:format(jpeg)/pic2663291.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 82
     },
     {
@@ -343,8 +395,11 @@
         "Science Fiction",
         "Territory Building"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/7k_nOxpO9OGIjhLq2BUZdA__small/img/eQ69OEDdjYjfKg6q5Navee87skU=/fit-in/200x150/filters:strip_icc()/pic3163924.jpg",
       "image": "https://cf.geekdo-images.com/7k_nOxpO9OGIjhLq2BUZdA__original/img/HlDb9F365w0tSP8uD1vf1pfniQE=/0x0/filters:format(jpeg)/pic3163924.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 73
     },
     {
@@ -363,8 +418,11 @@
         "Economic",
         "Nautical"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/CzwSm8i7tkLz6cBnrILZBg__small/img/ESPSltYYSFK-aJw6jOTdQrJGpOc=/fit-in/200x150/filters:strip_icc()/pic3453267.jpg",
       "image": "https://cf.geekdo-images.com/CzwSm8i7tkLz6cBnrILZBg__original/img/BhJ3sB3uk-eSdR1iW4EP3cu0Wi0=/0x0/filters:format(jpeg)/pic3453267.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 71
     },
     {
@@ -384,8 +442,11 @@
         "Exploration",
         "Fantasy"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/6GqH14TJJhza86BX5HCLEQ__small/img/J8SVmGOJXZGxNjkT3xYNQU7Haxg=/fit-in/200x150/filters:strip_icc()/pic5674958.jpg",
       "image": "https://cf.geekdo-images.com/6GqH14TJJhza86BX5HCLEQ__original/img/CXqwimJPonWy1oyXEMgPN_ZVmUI=/0x0/filters:format(jpeg)/pic5674958.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 70
     },
     {
@@ -406,8 +467,11 @@
         "Territory Building",
         "Wargame"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/JUAUWaVUzeBgzirhZNmHHw__small/img/ACovMZzGGIsBRyEQXFnsT8282NM=/fit-in/200x150/filters:strip_icc()/pic4254509.jpg",
       "image": "https://cf.geekdo-images.com/JUAUWaVUzeBgzirhZNmHHw__original/img/E0s2LvtFA1L5YKk-_44D4u2VD2s=/0x0/filters:format(jpeg)/pic4254509.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 66
     },
     {
@@ -427,8 +491,11 @@
         "Educational",
         "Environmental"
       ],
+      "thumbnail": "https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__small/img/VNToqgS2-pOGU6MuvIkMPKn_y-s=/fit-in/200x150/filters:strip_icc()/pic4458123.jpg",
       "image": "https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__original/img/cI782Zis9cT66j2MjSHKJGnFPNw=/0x0/filters:format(jpeg)/pic4458123.jpg",
-      "rankChange30": 0,
+      "rankChange1": 0,
+      "rankChange7": null,
+      "rankChange30": null,
       "hotScore": 62
     }
   ]
