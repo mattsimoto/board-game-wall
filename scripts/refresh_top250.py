@@ -1,111 +1,135 @@
 #!/usr/bin/env python3
 """Refresh Board Game Wall from BGG's official rank CSV and XML API2.
 
-The rank CSV is licensed with the XML API but its download page requires a
-logged-in BGG web session. Credentials are read only from environment variables
-and are exchanged for session cookies in memory for the duration of this run.
+BoardGameGeek's current XML API terms allow an approved application's bearer
+Application Token to authorize the all-games rank CSV. The same token is also
+used by fetch_bgg.py for XML API2 enrichment. No BGG username/password is
+required by this script.
 """
 
-import os
+import gzip
 import sys
-import time
 from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
 
-# Import the shared XML enrichment/history code without running its __main__.
+# Import shared XML enrichment/history code without running its __main__.
 import fetch_bgg as bgg
 
-BGG_USERNAME = os.environ.get("BGG_USERNAME", "").strip()
-BGG_PASSWORD = os.environ.get("BGG_PASSWORD", "")
-LOGIN_URL = "https://boardgamegeek.com/login/api/v1"
 RANK_PAGE = "https://boardgamegeek.com/data_dumps/bg_ranks"
 
-BROWSER_HEADERS = {
+HEADERS = {
+    "Authorization": f"Bearer {bgg.TOKEN}",
     "User-Agent": bgg.USER_AGENT,
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9",
+    # BGG may return the dump directly or an HTML page containing its signed URL.
+    "Accept": "text/csv,application/zip,application/octet-stream,text/html;q=0.9,*/*;q=0.8",
 }
 
 
-def require_credentials():
-    missing = []
-    if not BGG_USERNAME:
-        missing.append("BGG_USERNAME")
-    if not BGG_PASSWORD:
-        missing.append("BGG_PASSWORD")
-    if missing:
-        names = ", ".join(missing)
-        raise SystemExit(
-            f"Missing GitHub Actions secret(s): {names}. "
-            "The BGG rank CSV requires a logged-in BGG web session."
-        )
-
-
-def login():
-    session = requests.Session()
-    session.headers.update(BROWSER_HEADERS)
-
-    response = session.post(
-        LOGIN_URL,
-        json={
-            "credentials": {
-                "username": BGG_USERNAME,
-                "password": BGG_PASSWORD,
-            }
-        },
-        headers={**BROWSER_HEADERS, "Content-Type": "application/json"},
-        timeout=45,
+def looks_like_csv(payload: bytes) -> bool:
+    sample = payload[:2048].decode("utf-8-sig", errors="replace").lower()
+    first_line = sample.splitlines()[0] if sample.splitlines() else ""
+    return (
+        "id" in first_line
+        and "name" in first_line
+        and "rank" in first_line
+        and "," in first_line
     )
 
-    if response.status_code in (400, 401, 403):
-        raise RuntimeError(
-            f"BGG login failed with HTTP {response.status_code}. "
-            "Check BGG_USERNAME/BGG_PASSWORD and whether BGG requires an "
-            "interactive verification for this account."
-        )
-    response.raise_for_status()
 
-    cookie_names = set(session.cookies.keys())
-    if not cookie_names.intersection({"SessionID", "bggusername", "bgg_username"}):
-        print(
-            "Warning: login returned no familiar BGG cookie name; "
-            "continuing because BGG cookie names can change."
-        )
+def extract_signed_zip_url(html: str, base_url: str):
+    soup = BeautifulSoup(html, "html.parser")
+    candidates = []
 
-    return session
-
-
-def rank_download_url(session):
-    response = session.get(RANK_PAGE, timeout=60)
-    response.raise_for_status()
-
-    soup = BeautifulSoup(response.text, "html.parser")
-
-    # BGG currently labels the signed download link "Click to Download".
     for link in soup.find_all("a", href=True):
+        href = urljoin(base_url, link["href"])
         text = link.get_text(" ", strip=True).lower()
-        href = urljoin(response.url, link["href"])
-        path = urlparse(href).path.lower()
-        if "click to download" in text:
-            return href
-        if "boardgames_ranks" in path and path.endswith(".zip"):
-            return href
+        parsed = urlparse(href)
+        path = parsed.path.lower()
 
-    raise RuntimeError(
-        "Logged in to BGG, but no rank-dump download link was found. "
-        "BGG may have changed the data-dump page markup."
+        if path.endswith(".zip"):
+            candidates.append(href)
+            if (
+                "click to download" in text
+                or "geek-export-stats" in parsed.netloc.lower()
+                or "boardgames_ranks" in path
+            ):
+                return href
+
+    return candidates[0] if candidates else None
+
+
+def download_official_rank_csv():
+    print("Downloading BGG's official rank dump with the approved application token...")
+    response = requests.get(
+        RANK_PAGE,
+        headers=HEADERS,
+        timeout=120,
+        allow_redirects=True,
+    )
+    response.raise_for_status()
+
+    payload = response.content
+    content_type = response.headers.get("content-type", "").lower()
+    print(
+        f"Rank source response: HTTP {response.status_code}; "
+        f"content-type={content_type or 'unknown'}; bytes={len(payload)}"
     )
 
+    # Direct ZIP response.
+    if payload.startswith(b"PK"):
+        return bgg.extract_csv_bytes(payload, response.url)
 
-def download_rank_csv(session, url):
-    response = session.get(url, timeout=180, allow_redirects=True)
-    response.raise_for_status()
-    csv_bytes = bgg.extract_csv_bytes(response.content, response.url)
-    if len(csv_bytes) < 1000:
-        raise RuntimeError("Downloaded BGG rank CSV was unexpectedly small.")
-    return csv_bytes
+    # Some download paths may return a gzip stream rather than a ZIP.
+    if payload.startswith(b"\x1f\x8b"):
+        unzipped = gzip.decompress(payload)
+        if looks_like_csv(unzipped):
+            return unzipped
+
+    # BGG can return the CSV directly from /data_dumps/bg_ranks even when the
+    # content type is generic, so detect the CSV by its header instead of
+    # depending on Content-Type.
+    if looks_like_csv(payload):
+        return payload
+
+    # Some BGG responses are an authorized HTML page containing a short-lived,
+    # signed S3 ZIP URL. Follow that URL if present.
+    text = response.text
+    signed_url = extract_signed_zip_url(text, response.url)
+    if signed_url:
+        print("BGG returned a signed rank-dump URL; downloading ZIP...")
+        download_headers = {
+            "User-Agent": bgg.USER_AGENT,
+            "Referer": RANK_PAGE,
+        }
+        # Keep the bearer token only on BGG-owned URLs. Signed S3 URLs already
+        # contain their authorization in the query string.
+        if (urlparse(signed_url).hostname or "").lower().endswith("boardgamegeek.com"):
+            download_headers["Authorization"] = f"Bearer {bgg.TOKEN}"
+
+        download = requests.get(
+            signed_url,
+            headers=download_headers,
+            timeout=180,
+            allow_redirects=True,
+        )
+        download.raise_for_status()
+        if download.content.startswith(b"PK"):
+            return bgg.extract_csv_bytes(download.content, download.url)
+        if looks_like_csv(download.content):
+            return download.content
+        raise RuntimeError(
+            "BGG's signed rank download did not contain a ZIP or CSV. "
+            f"content-type={download.headers.get('content-type', 'unknown')}"
+        )
+
+    preview = text[:160].replace("\n", " ").replace("\r", " ")
+    raise RuntimeError(
+        "The approved BGG application token reached the rank-dump endpoint, "
+        "but BGG returned neither CSV data nor a signed ZIP link. "
+        f"content-type={content_type or 'unknown'}; response starts: {preview!r}"
+    )
 
 
 def current_top(csv_bytes):
@@ -121,16 +145,10 @@ def current_top(csv_bytes):
 
 
 def main():
-    require_credentials()
-    print("Opening authenticated BGG session for the official rank CSV...")
-    session = login()
-    time.sleep(2)
+    if not bgg.TOKEN:
+        raise SystemExit("BGG_TOKEN is required.")
 
-    print("Locating BGG's current rank dump...")
-    download_url = rank_download_url(session)
-
-    print("Downloading official BGG rank CSV...")
-    csv_bytes = download_rank_csv(session, download_url)
+    csv_bytes = download_official_rank_csv()
     top = current_top(csv_bytes)
     print(f"Discovered current BGG Top {len(top)} from the official rank CSV.")
 
