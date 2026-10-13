@@ -1,4 +1,4 @@
-const state = { games: [], view: 'rank', period: '1' };
+const state = { games: [], view: 'rank', period: '7' };
 const wall = document.querySelector('#gameWall');
 const count = document.querySelector('#gameCount');
 const empty = document.querySelector('#emptyState');
@@ -87,23 +87,40 @@ function hotScore(game) {
 }
 function sortGames(games) {
   const copy = [...games];
-  if (state.view === 'climbers') return copy.sort((a,b) => compareNullableMovement(a,b,-1));
-  if (state.view === 'fallers') return copy.sort((a,b) => compareNullableMovement(a,b,1));
+  if (state.view === 'climbers') return copy.filter(game => movementValue(game) > 0).sort((a,b) => compareNullableMovement(a,b,-1));
+  if (state.view === 'fallers') return copy.filter(game => movementValue(game) < 0).sort((a,b) => compareNullableMovement(a,b,1));
   if (state.view === 'hot') return copy.sort((a,b) => hotScore(b) - hotScore(a) || a.rank - b.rank);
   return copy.sort((a,b) => a.rank - b.rank);
+}
+function movementStats(games) {
+  const values = games.map(game => movementValue(game));
+  return {
+    up: values.filter(value => value !== null && value > 0).length,
+    down: values.filter(value => value !== null && value < 0).length,
+    flat: values.filter(value => value === 0).length,
+    unavailable: values.filter(value => value === null).length
+  };
+}
+function updateMovementUi(filtered) {
+  const stats = movementStats(filtered);
+  const climbersButton = document.querySelector('#viewControls [data-view="climbers"]');
+  const fallersButton = document.querySelector('#viewControls [data-view="fallers"]');
+  if (climbersButton) climbersButton.textContent = `Climbers ${stats.up}`;
+  if (fallersButton) fallersButton.textContent = `Fallers ${stats.down}`;
+  const summary = document.querySelector('#movementSummary');
+  if (summary) summary.textContent = `${stats.up} rising · ${stats.down} falling · ${stats.flat} steady / ${movementPeriodLabel()}`;
 }
 function render() {
   const filtered = state.games.filter(matches);
   const games = sortGames(filtered);
-  const hasMovement = games.some(game => movementValue(game) !== null);
+  updateMovementUi(filtered);
 
   count.textContent = games.length;
   empty.hidden = games.length > 0;
   if (!games.length) {
-    empty.textContent = 'No games match those filters.';
-  } else if ((state.view === 'climbers' || state.view === 'fallers') && !hasMovement) {
-    empty.hidden = false;
-    empty.textContent = `${movementPeriodLabel()} movement is still collecting history.`;
+    if (state.view === 'climbers') empty.textContent = `No games climbed during the selected ${movementPeriodLabel()} period.`;
+    else if (state.view === 'fallers') empty.textContent = `No games fell during the selected ${movementPeriodLabel()} period.`;
+    else empty.textContent = 'No games match those filters.';
   }
 
   wall.innerHTML = games.map((game, index) => {
@@ -113,7 +130,7 @@ function render() {
       ? `${movementPeriodLabel()} movement is not available yet`
       : `${movementPeriodLabel()} rank movement`;
     return `
-    <article class="game-card ${cardSize(game,index)}" data-id="${game.id}" tabindex="0" role="button" aria-label="${escapeHtml(game.name)}, BoardGameGeek rank ${game.rank}">
+    <article class="game-card ${cardSize(game,index)} ${delta > 0 ? 'movement-up' : delta < 0 ? 'movement-down' : ''}" data-id="${game.id}" tabindex="0" role="button" aria-label="${escapeHtml(game.name)}, BoardGameGeek rank ${game.rank}">
       <div class="cover-stage" aria-hidden="true">
         <img class="cover-backdrop" src="${tileImage}" alt="" loading="lazy" referrerpolicy="no-referrer" />
         <img class="cover-art" src="${tileImage}" alt="" loading="lazy" referrerpolicy="no-referrer" />
@@ -191,10 +208,10 @@ document.querySelector('#periodControls').addEventListener('click', e => {
 document.querySelector('#resetFilters').addEventListener('click', () => {
   category.value = players.value = age.value = time.value = 'all';
   state.view = 'rank';
-  state.period = '1';
+  state.period = '7';
   document.querySelectorAll('#viewControls button').forEach(b => b.classList.toggle('active', b.dataset.view === 'rank'));
-  document.querySelectorAll('#periodControls button').forEach(b => b.classList.toggle('active', b.dataset.period === '1'));
-  document.querySelector('#movementPeriodLabel').textContent = '1D movement';
+  document.querySelectorAll('#periodControls button').forEach(b => b.classList.toggle('active', b.dataset.period === '7'));
+  document.querySelector('#movementPeriodLabel').textContent = '7D movement';
   render();
 });
 
