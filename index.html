@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="movement.css" />
+  <link rel="stylesheet" href="styles.css?v=20261013-1" />
+  <link rel="stylesheet" href="movement.css?v=20261013-1" />
 </head>
 <body>
   <header class="site-header">
@@ -40,10 +40,10 @@
       </div>
 
       <div class="control-block">
-        <span class="control-caption" id="movementPeriodLabel">1D movement</span>
+        <span class="control-caption" id="movementPeriodLabel">7D movement</span>
         <div class="period-tabs" id="periodControls" aria-label="Rank movement period">
-          <button class="active" data-period="1">1D</button>
-          <button data-period="7">7D</button>
+          <button data-period="1">1D</button>
+          <button class="active" data-period="7">7D</button>
           <button data-period="30">30D</button>
         </div>
       </div>
@@ -96,6 +96,7 @@
       <div class="summary-count">
         <strong id="gameCount">0</strong><span>games</span>
         <span class="pool-label" id="poolLabel">Current BGG Top 250</span>
+        <span class="movement-summary" id="movementSummary">Loading movement…</span>
       </div>
       <div class="legend"><span class="move up">▲ rising</span><span class="move down">▼ falling</span><span class="move flat">• steady</span></div>
     </section>
@@ -119,6 +120,6 @@
     </a>
   </footer>
 
-  <script src="app.js" defer></script>
+  <script src="app.js?v=20261013-1" defer></script>
 </body>
 </html>
