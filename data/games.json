@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22T13:56:08.751624Z",
+  "updated": "2026-10-23T13:35:34.467541Z",
   "source": "Buffered BGG XML API2 live ranks + XML API2",
   "rankSource": "Buffered BGG XML API2 live ranks",
   "topN": 250,
@@ -1643,7 +1643,7 @@
       "image": "https://cf.geekdo-images.com/wIbevITv9W79ELP8rEZoKA__original/img/41fYEG_IYb9ECcCO24Dk4dZUNT0=/0x0/filters:format(jpeg)/pic6996584.jpg",
       "rankChange1": 0,
       "rankChange7": 1,
-      "rankChange30": 2,
+      "rankChange30": 1,
       "hotScore": 33
     },
     {
@@ -1692,7 +1692,7 @@
       "image": "https://cf.geekdo-images.com/OrHS8_a1CqSGiXeTfCk0Wg__original/img/hVArRkZYHiPTGTfi0DPR58i4o44=/0x0/filters:format(jpeg)/pic3209553.jpg",
       "rankChange1": 0,
       "rankChange7": 0,
-      "rankChange30": -1,
+      "rankChange30": 0,
       "hotScore": 29
     },
     {
@@ -2422,7 +2422,7 @@
       "image": "https://cf.geekdo-images.com/36WIe0ZHkp5OvHOlB-8vog__original/img/4oIeldEZrg5Fi2YAlc5SzldywaA=/0x0/filters:format(jpeg)/pic4356580.jpg",
       "rankChange1": 0,
       "rankChange7": 0,
-      "rankChange30": 1,
+      "rankChange30": 2,
       "hotScore": 0
     },
     {
@@ -2443,7 +2443,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/0w8go6cfvlpgJKydHUkDtA__small/img/0z1o-kU2xYwmVO8oNszdt1V4K54=/fit-in/200x150/filters:strip_icc()/pic2225968.png",
       "image": "https://cf.geekdo-images.com/0w8go6cfvlpgJKydHUkDtA__original/img/322N77t8F7uTev-U_WCqX5uqmEE=/0x0/filters:format(png)/pic2225968.png",
-      "rankChange1": 1,
+      "rankChange1": 0,
       "rankChange7": 0,
       "rankChange30": -1,
       "hotScore": 0
@@ -2468,7 +2468,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/l-LMcklO683dyVlnRZS3mg__small/img/8usx0HfsTXTpE2kklVRMtJGAwFY=/fit-in/200x150/filters:strip_icc()/pic7556818.jpg",
       "image": "https://cf.geekdo-images.com/l-LMcklO683dyVlnRZS3mg__original/img/iCKYMpwsmiM18FHFT9Nzuk625bQ=/0x0/filters:format(jpeg)/pic7556818.jpg",
-      "rankChange1": -1,
+      "rankChange1": 0,
       "rankChange7": 2,
       "rankChange30": 2,
       "hotScore": 4
@@ -2490,8 +2490,8 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/XWImAu_3RK61wbzcKboVdA__small/img/Ry-6KHwNgERWadyxs1X1_P3dMvY=/fit-in/200x150/filters:strip_icc()/pic8145530.png",
       "image": "https://cf.geekdo-images.com/XWImAu_3RK61wbzcKboVdA__original/img/43ianMZOks7UHlZILx0VBRntOmM=/0x0/filters:format(png)/pic8145530.png",
-      "rankChange1": 1,
-      "rankChange7": 0,
+      "rankChange1": 0,
+      "rankChange7": -1,
       "rankChange30": -4,
       "hotScore": 0
     },
@@ -2512,9 +2512,9 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/DPjV1iI0ygo5Bl3XLNRiIg__small/img/O2WnqJew5gNjQqPUH3gqmTBc1pQ=/fit-in/200x150/filters:strip_icc()/pic4449526.jpg",
       "image": "https://cf.geekdo-images.com/DPjV1iI0ygo5Bl3XLNRiIg__original/img/cXqOdM3BLyIeRt0GP3M3V--gF1M=/0x0/filters:format(jpeg)/pic4449526.jpg",
-      "rankChange1": -1,
-      "rankChange7": -2,
-      "rankChange30": -2,
+      "rankChange1": 0,
+      "rankChange7": -1,
+      "rankChange30": -3,
       "hotScore": 0
     },
     {
@@ -3029,9 +3029,9 @@
       "thumbnail": "https://cf.geekdo-images.com/1boSR6Gvi_melhbRhxdAUw__small/img/bNjTBErgY4yxjVDfxIt-YfGd37M=/fit-in/200x150/filters:strip_icc()/pic8332880.jpg",
       "image": "https://cf.geekdo-images.com/1boSR6Gvi_melhbRhxdAUw__original/img/24xghPFZCCbHSwja7VwR2QFdHbU=/0x0/filters:format(jpeg)/pic8332880.jpg",
       "rankChange1": 0,
-      "rankChange7": 2,
+      "rankChange7": 1,
       "rankChange30": 11,
-      "hotScore": 4
+      "hotScore": 2
     },
     {
       "id": 396790,
@@ -3075,7 +3075,7 @@
       "thumbnail": "https://cf.geekdo-images.com/0qxz9DRRhsJrIW1TJ-kz0w__small/img/ma4yc5wbMVrfbg9r21-LxGVwRKw=/fit-in/200x150/filters:strip_icc()/pic5710736.jpg",
       "image": "https://cf.geekdo-images.com/0qxz9DRRhsJrIW1TJ-kz0w__original/img/PzsJsCLfGGo4IG3v43VPvH_etPw=/0x0/filters:format(jpeg)/pic5710736.jpg",
       "rankChange1": 0,
-      "rankChange7": -1,
+      "rankChange7": 0,
       "rankChange30": -2,
       "hotScore": 0
     },
@@ -3237,7 +3237,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/gBPzZsgm9nrUYVfdK216NA__small/img/aceZ647BbV53Yv7rod9AwpTTst0=/fit-in/200x150/filters:strip_icc()/pic4557340.png",
       "image": "https://cf.geekdo-images.com/gBPzZsgm9nrUYVfdK216NA__original/img/eQEmKYEWVoNvEx6PZYZv13275io=/0x0/filters:format(png)/pic4557340.png",
-      "rankChange1": 1,
+      "rankChange1": 0,
       "rankChange7": 2,
       "rankChange30": 1,
       "hotScore": 4
@@ -3262,7 +3262,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/HbfgxDJZQnNEZQKvpmJxQg__small/img/5t1MtJEDdhSgtyJlmu3Hu1qR_ZQ=/fit-in/200x150/filters:strip_icc()/pic2278942.jpg",
       "image": "https://cf.geekdo-images.com/HbfgxDJZQnNEZQKvpmJxQg__original/img/HsrtfanhKfXX07zNEm-xZpSbxyY=/0x0/filters:format(jpeg)/pic2278942.jpg",
-      "rankChange1": -1,
+      "rankChange1": 0,
       "rankChange7": -1,
       "rankChange30": -2,
       "hotScore": 0
@@ -3727,7 +3727,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/WlvyznYhlYNXMtMbKKu1oA__small/img/cudczHrJs0wFKywIHBQ6Fb7D7oY=/fit-in/200x150/filters:strip_icc()/pic2471359.jpg",
       "image": "https://cf.geekdo-images.com/WlvyznYhlYNXMtMbKKu1oA__original/img/AQ1P6PKw7ZW-XTOAFKhCwsnfP0I=/0x0/filters:format(jpeg)/pic2471359.jpg",
-      "rankChange1": 1,
+      "rankChange1": 0,
       "rankChange7": 0,
       "rankChange30": -1,
       "hotScore": 0
@@ -3748,7 +3748,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/3edsEXwH21uaO8HXXdD1Dg__small/img/jUrVfOrsWBIaTRd5F6RKHFOYcaQ=/fit-in/200x150/filters:strip_icc()/pic7745916.png",
       "image": "https://cf.geekdo-images.com/3edsEXwH21uaO8HXXdD1Dg__original/img/O-03BIpt7yhPbsffYjDwZc68zbQ=/0x0/filters:format(png)/pic7745916.png",
-      "rankChange1": -1,
+      "rankChange1": 0,
       "rankChange7": 0,
       "rankChange30": -1,
       "hotScore": 0
@@ -3820,7 +3820,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/n3gYugbvd_LHVynDhfoVbw__small/img/ze7YA6aXpf6xgmDUhD0gv_HoW30=/fit-in/200x150/filters:strip_icc()/pic7334483.jpg",
       "image": "https://cf.geekdo-images.com/n3gYugbvd_LHVynDhfoVbw__original/img/wpassO7P8Vb-3tke2X3Ou5Pn0LE=/0x0/filters:format(jpeg)/pic7334483.jpg",
-      "rankChange1": 1,
+      "rankChange1": 0,
       "rankChange7": 2,
       "rankChange30": 2,
       "hotScore": 4
@@ -3845,7 +3845,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/nC6ifPCDnAItwoKSKXVrnw__small/img/1iZav_8ZqurrDbvkZA9GcFhB5x0=/fit-in/200x150/filters:strip_icc()/pic8907965.jpg",
       "image": "https://cf.geekdo-images.com/nC6ifPCDnAItwoKSKXVrnw__original/img/Id-jjIer_61ZbvI2_RVRCeBZFY4=/0x0/filters:format(jpeg)/pic8907965.jpg",
-      "rankChange1": -1,
+      "rankChange1": 0,
       "rankChange7": -1,
       "rankChange30": 0,
       "hotScore": 0
@@ -3985,7 +3985,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/hR5sxxqNY3gjvLwifaqRww__small/img/dPZ7zqlIVCt4xiWfISkpujiwKwk=/fit-in/200x150/filters:strip_icc()/pic3646165.jpg",
       "image": "https://cf.geekdo-images.com/hR5sxxqNY3gjvLwifaqRww__original/img/kaXHOjBJX-URkjTjhQUhFl7E8Ng=/0x0/filters:format(jpeg)/pic3646165.jpg",
-      "rankChange1": 1,
+      "rankChange1": 0,
       "rankChange7": 1,
       "rankChange30": 1,
       "hotScore": 2
@@ -4009,7 +4009,7 @@
       ],
       "thumbnail": "https://cf.geekdo-images.com/CxJmNl4wR4InjqyNrMdBTw__small/img/TtlQgYxLTPyYQWJvruMHfwKPReE=/fit-in/200x150/filters:strip_icc()/pic163749.jpg",
       "image": "https://cf.geekdo-images.com/CxJmNl4wR4InjqyNrMdBTw__original/img/TKQgvl_i6zVYld8Gac8oU-c2ezE=/0x0/filters:format(jpeg)/pic163749.jpg",
-      "rankChange1": -1,
+      "rankChange1": 0,
       "rankChange7": -1,
       "rankChange30": -2,
       "hotScore": 0
@@ -4355,7 +4355,7 @@
       "image": "https://cf.geekdo-images.com/GifbnAmsA4lfEcDkeaC9VA__original/img/YzJORdIDNza8kmrY6KEU_h2p2Wo=/0x0/filters:format(png)/pic4397932.png",
       "rankChange1": 0,
       "rankChange7": -1,
-      "rankChange30": 0,
+      "rankChange30": 1,
       "hotScore": 0
     },
     {
@@ -4399,7 +4399,7 @@
       "image": "https://cf.geekdo-images.com/gcALy45JfcjyKUn6T3mBIQ__original/img/YLSAurBSWEGi3PHsuQWi8St_0Yg=/0x0/filters:format(jpeg)/pic4422847.jpg",
       "rankChange1": 0,
       "rankChange7": -1,
-      "rankChange30": -1,
+      "rankChange30": -2,
       "hotScore": 0
     },
     {
@@ -4423,7 +4423,7 @@
       "thumbnail": "https://cf.geekdo-images.com/ZmXi5BbtoWl58ZnKcUy1vw__small/img/__NGanznvqHKTFhj28S8ZpfLbpc=/fit-in/200x150/filters:strip_icc()/pic906495.jpg",
       "image": "https://cf.geekdo-images.com/ZmXi5BbtoWl58ZnKcUy1vw__original/img/nNHf1qRJCVQx_0p-1zM8QKxcywo=/0x0/filters:format(jpeg)/pic906495.jpg",
       "rankChange1": 0,
-      "rankChange7": 0,
+      "rankChange7": -1,
       "rankChange30": -1,
       "hotScore": 0
     },
@@ -4447,7 +4447,7 @@
       "thumbnail": "https://cf.geekdo-images.com/od4vDTdXGPSVc-kjLqM11w__small/img/T2ukKoCUNv2LMxg5GOlOb8WTzNI=/fit-in/200x150/filters:strip_icc()/pic4651175.jpg",
       "image": "https://cf.geekdo-images.com/od4vDTdXGPSVc-kjLqM11w__original/img/sN8TnSkFGCzNM01b_drFxwYnqlM=/0x0/filters:format(jpeg)/pic4651175.jpg",
       "rankChange1": 0,
-      "rankChange7": -2,
+      "rankChange7": -1,
       "rankChange30": -1,
       "hotScore": 0
     },
@@ -4496,7 +4496,7 @@
       "image": "https://cf.geekdo-images.com/RjwAj6hw5aEMGvosEA12gw__original/img/jQUkqrDd0lOX6IRGq5Cbj1junL4=/0x0/filters:format(jpeg)/pic5879810.jpg",
       "rankChange1": 0,
       "rankChange7": 1,
-      "rankChange30": -1,
+      "rankChange30": 0,
       "hotScore": 2
     },
     {
@@ -4543,7 +4543,7 @@
       "image": "https://cf.geekdo-images.com/iTBogxNFa3Ymh-6ST3srsw__original/img/ECgm53fEsB3eDVjZjgeejiZ__Qk=/0x0/filters:format(jpeg)/pic4768766.jpg",
       "rankChange1": 0,
       "rankChange7": 0,
-      "rankChange30": -2,
+      "rankChange30": -3,
       "hotScore": 0
     },
     {
@@ -4657,7 +4657,7 @@
       "image": "https://cf.geekdo-images.com/qPNWng17gy-ghltZfNcBwA__original/img/mPJnr0qY9uAap4HKmwBoURzzaZ0=/0x0/filters:format(png)/pic6893215.png",
       "rankChange1": 0,
       "rankChange7": 0,
-      "rankChange30": 0,
+      "rankChange30": 1,
       "hotScore": 0
     },
     {
@@ -4680,9 +4680,9 @@
       "thumbnail": "https://cf.geekdo-images.com/Y7vIlh-m_Ugnv0jrUuOW3g__small/img/pTIdvbosIWlLSxorWRMWkUkeSj8=/fit-in/200x150/filters:strip_icc()/pic8165052.jpg",
       "image": "https://cf.geekdo-images.com/Y7vIlh-m_Ugnv0jrUuOW3g__original/img/anztl_yjkT6QMcW4p5Dit7KAChE=/0x0/filters:format(jpeg)/pic8165052.jpg",
       "rankChange1": 0,
-      "rankChange7": 3,
+      "rankChange7": 4,
       "rankChange30": 16,
-      "hotScore": 6
+      "hotScore": 8
     },
     {
       "id": 82222,
@@ -4709,7 +4709,7 @@
       "image": "https://cf.geekdo-images.com/6uEBiPxMH8gfGJ6f3HLNGg__original/img/p-g0LziOt6tE90cVJUvLZF0exfI=/0x0/filters:format(png)/pic1807124.png",
       "rankChange1": 0,
       "rankChange7": -1,
-      "rankChange30": -1,
+      "rankChange30": -2,
       "hotScore": 0
     },
     {
@@ -4776,7 +4776,7 @@
       "thumbnail": "https://cf.geekdo-images.com/rGomBfj0FGrZM-w3h5HFWQ__small/img/DnptKBxT6l_W2B3jGXdnEDEkDM0=/fit-in/200x150/filters:strip_icc()/pic8250341.png",
       "image": "https://cf.geekdo-images.com/rGomBfj0FGrZM-w3h5HFWQ__original/img/XtVFdYXLAxdGOjQOGCkrms-hLUU=/0x0/filters:format(png)/pic8250341.png",
       "rankChange1": 0,
-      "rankChange7": 0,
+      "rankChange7": -1,
       "rankChange30": 1,
       "hotScore": 0
     },
@@ -4871,9 +4871,9 @@
       "thumbnail": "https://cf.geekdo-images.com/rc7CQ5l95ZFoKq3iBVqjgg__small/img/3W5hTyRw8ABDkasT1mFSAf4f30w=/fit-in/200x150/filters:strip_icc()/pic5543526.jpg",
       "image": "https://cf.geekdo-images.com/rc7CQ5l95ZFoKq3iBVqjgg__original/img/3EH__HLlmY7adABsY_HUtAlEMfo=/0x0/filters:format(jpeg)/pic5543526.jpg",
       "rankChange1": 0,
-      "rankChange7": 2,
+      "rankChange7": 1,
       "rankChange30": 1,
-      "hotScore": 4
+      "hotScore": 2
     },
     {
       "id": 265188,
@@ -4895,9 +4895,9 @@
       "thumbnail": "https://cf.geekdo-images.com/sMRuph3HFUcaSpJZihGZKw__small/img/UHuDcnjAwCiXbNfjuY26-EEnG2M=/fit-in/200x150/filters:strip_icc()/pic5841874.jpg",
       "image": "https://cf.geekdo-images.com/sMRuph3HFUcaSpJZihGZKw__original/img/ehoqoTirtFb5p9Wk2SwWV8nr6ZU=/0x0/filters:format(jpeg)/pic5841874.jpg",
       "rankChange1": 0,
-      "rankChange7": 0,
+      "rankChange7": 1,
       "rankChange30": -1,
-      "hotScore": 0
+      "hotScore": 2
     },
     {
       "id": 127023,
@@ -4944,7 +4944,7 @@
       "image": "https://cf.geekdo-images.com/ptDZ2tJ6dSNiONAx3HH8Tw__original/img/iu21NR45DwHyFY-UPW0m7hwY_vw=/0x0/filters:format(jpeg)/pic3514298.jpg",
       "rankChange1": 0,
       "rankChange7": 0,
-      "rankChange30": 0,
+      "rankChange30": -1,
       "hotScore": 0
     },
     {
@@ -4993,7 +4993,7 @@
       "image": "https://cf.geekdo-images.com/AuAheDzhkLufiZFE9JaRNA__original/img/pKq-l1Ms78olHwMbZYMa_x6m-fM=/0x0/filters:format(jpeg)/pic4781085.jpg",
       "rankChange1": 0,
       "rankChange7": 0,
-      "rankChange30": -3,
+      "rankChange30": -2,
       "hotScore": 0
     },
     {
@@ -5204,9 +5204,9 @@
       "thumbnail": "https://cf.geekdo-images.com/l0bFsrGy_cfKRK6YW_dG-g__small/img/tyIDtVr0dF6mOs84awJ2rLGX8xQ=/fit-in/200x150/filters:strip_icc()/pic8586892.png",
       "image": "https://cf.geekdo-images.com/l0bFsrGy_cfKRK6YW_dG-g__original/img/XsxovE47zCq8N2VSIybKgiEh9dg=/0x0/filters:format(png)/pic8586892.png",
       "rankChange1": 0,
-      "rankChange7": 0,
+      "rankChange7": 1,
       "rankChange30": 1,
-      "hotScore": 0
+      "hotScore": 2
     },
     {
       "id": 43111,
@@ -5229,7 +5229,7 @@
       "thumbnail": "https://cf.geekdo-images.com/yTe9522sHL-3nhfAMH2cTg__small/img/hzQEjxV31FkgVXiHwDD8n0wF2I0=/fit-in/200x150/filters:strip_icc()/pic1318481.jpg",
       "image": "https://cf.geekdo-images.com/yTe9522sHL-3nhfAMH2cTg__original/img/zN6-x2bWP6lsDAC2FNsvU6ivQIc=/0x0/filters:format(jpeg)/pic1318481.jpg",
       "rankChange1": 0,
-      "rankChange7": 0,
+      "rankChange7": -1,
       "rankChange30": -1,
       "hotScore": 0
     },
@@ -5254,9 +5254,9 @@
       "thumbnail": "https://cf.geekdo-images.com/bt-s6gbhhI46VSIgsxyOIw__small/img/TKmW4GDTIqDq242s222Viq_R4po=/fit-in/200x150/filters:strip_icc()/pic7375234.jpg",
       "image": "https://cf.geekdo-images.com/bt-s6gbhhI46VSIgsxyOIw__original/img/xYe36FgPjJnSkBjIG3lryToA82I=/0x0/filters:format(jpeg)/pic7375234.jpg",
       "rankChange1": 0,
-      "rankChange7": 4,
-      "rankChange30": 17,
-      "hotScore": 8
+      "rankChange7": 2,
+      "rankChange30": 16,
+      "hotScore": 4
     },
     {
       "id": 118,
@@ -5323,7 +5323,7 @@
       "thumbnail": "https://cf.geekdo-images.com/-PuiCnbxlBzMSjnUegp9AQ__small/img/CKamYUPlBDXav4A1AEqMRy976fY=/fit-in/200x150/filters:strip_icc()/pic5556025.jpg",
       "image": "https://cf.geekdo-images.com/-PuiCnbxlBzMSjnUegp9AQ__original/img/hH1AwTR4fdtYY_cO8IYp1-I8dhE=/0x0/filters:format(jpeg)/pic5556025.jpg",
       "rankChange1": 0,
-      "rankChange7": -1,
+      "rankChange7": 0,
       "rankChange30": 1,
       "hotScore": 0
     },
@@ -5346,7 +5346,7 @@
       "thumbnail": "https://cf.geekdo-images.com/Ij9Zpnx1jVmtLtBD3DvLXQ__small/img/YvzL5r5jpC7tTYckNgTediSiiXU=/fit-in/200x150/filters:strip_icc()/pic9000036.png",
       "image": "https://cf.geekdo-images.com/Ij9Zpnx1jVmtLtBD3DvLXQ__original/img/S5OMoCGqlYwZQWcnYRUvVmap2NE=/0x0/filters:format(png)/pic9000036.png",
       "rankChange1": 0,
-      "rankChange7": -1,
+      "rankChange7": 0,
       "rankChange30": -2,
       "hotScore": 0
     },
@@ -5393,9 +5393,9 @@
       "thumbnail": "https://cf.geekdo-images.com/sd0acHeHj9RE-daXPC7pEg__small/img/ZDxL0mhIb3Rg8st8zCVZD9ngnf4=/fit-in/200x150/filters:strip_icc()/pic5153383.jpg",
       "image": "https://cf.geekdo-images.com/sd0acHeHj9RE-daXPC7pEg__original/img/G6dWPuaWJA9WtymikfcTGj_c4TA=/0x0/filters:format(jpeg)/pic5153383.jpg",
       "rankChange1": 0,
-      "rankChange7": 1,
+      "rankChange7": 2,
       "rankChange30": 1,
-      "hotScore": 2
+      "hotScore": 4
     },
     {
       "id": 9609,
@@ -5419,9 +5419,9 @@
       "thumbnail": "https://cf.geekdo-images.com/JmdqlBJBynZMOciZzkVIkw__small/img/PgSR-5Hd8W6YBrLJLSvOBKH3Sls=/fit-in/200x150/filters:strip_icc()/pic725882.jpg",
       "image": "https://cf.geekdo-images.com/JmdqlBJBynZMOciZzkVIkw__original/img/9LYzTUmOTO2enhJvqauMt6odC5Y=/0x0/filters:format(jpeg)/pic725882.jpg",
       "rankChange1": 0,
-      "rankChange7": 1,
+      "rankChange7": 0,
       "rankChange30": -4,
-      "hotScore": 2
+      "hotScore": 0
     },
     {
       "id": 367150,
@@ -5659,7 +5659,7 @@
       "image": "https://cf.geekdo-images.com/LPa6rsGcv8S0-OeNjCOAEQ__original/img/AF8HHaIad1re-eg3kd9mlm2j_ss=/0x0/filters:format(jpeg)/pic1398895.jpg",
       "rankChange1": 0,
       "rankChange7": 0,
-      "rankChange30": -1,
+      "rankChange30": 0,
       "hotScore": 0
     },
     {
@@ -5804,7 +5804,7 @@
       "name": "Horrified",
       "year": 2019,
       "rank": 247,
-      "rating": 7.58108,
+      "rating": 7.58107,
       "minPlayers": 1,
       "maxPlayers": 5,
       "minAge": 10,
